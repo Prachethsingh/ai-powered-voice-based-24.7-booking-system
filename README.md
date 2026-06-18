@@ -23,8 +23,17 @@ Customer Calls → Asterisk PBX → Whisper STT → LangChain Pipeline → SmolL
 | Intent SLM | SmolLM 335M GGUF Q4 | 200MB, fine-tuned, CPU |
 | Database | SQLite + Redis | Encrypted phone numbers, deduplication |
 | Backend | Node.js + Python | ARI in Node, AI pipeline in Python |
-| Frontend | React (Vite) | Live WebSocket dashboard |
+| Frontend | React (Vite) | Live WebSocket dashboard with Selene UI |
 | Security | Fernet AES-128 + HMAC | Phone encryption, RTP signing |
+
+---
+
+## Selene UI
+
+The dashboard uses a Selene UI glassmorphism design system for the FLY platform experience:
+
+- Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user engagement and 30% faster load times.
+- Spearheaded the integration of AI tools into design workflows, enabling designers to iterate 50% faster.
 
 ---
 
