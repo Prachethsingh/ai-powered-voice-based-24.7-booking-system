@@ -27,7 +27,11 @@ config({ path: join(dirname(fileURLToPath(import.meta.url)), "../../.env") });
 const PORT         = parseInt(process.env.NODE_SERVER_PORT  || "8000");
 const WS_PORT      = parseInt(process.env.WEBSOCKET_PORT    || "8080");
 const PYTHON_API   = `http://127.0.0.1:${process.env.PYTHON_API_PORT || 8001}`;
-const WS_ORIGINS   = (process.env.ALLOWED_WEBSOCKET_ORIGINS || "http://localhost:3000").split(",");
+const WS_ORIGINS   = Array.from(new Set([
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  ...(process.env.ALLOWED_WEBSOCKET_ORIGINS || "").split(",").map((origin) => origin.trim()).filter(Boolean),
+]));
 const ARI_HOST     = process.env.ASTERISK_HOST || "127.0.0.1";
 const ARI_PORT     = parseInt(process.env.ASTERISK_ARI_PORT || "8088");
 const ARI_USER     = process.env.ASTERISK_ARI_USER || "asterisk";

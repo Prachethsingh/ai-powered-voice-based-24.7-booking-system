@@ -177,7 +177,7 @@ export default function App() {
             </div>
             <div className="rounded-full border border-slate-700/70 bg-slate-900/70 px-3 py-1.5 text-xs text-slate-400">
               <Sparkles size={12} className="mr-1.5 inline text-violet-300" />
-              Redesigned dashboard experience
+              24/7 voice booking
             </div>
           </div>
         </div>
