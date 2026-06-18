@@ -1,0 +1,54 @@
+# Secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Models (large binary files)
+models/*.gguf
+models/*.bin
+models/smollm-finetuned/
+models/smollm-merged/
+models/tinyllama-model/
+
+# Database (contains encrypted personal data)
+database/*.sqlite
+database/*.db
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Node
+node_modules/
+backend/node/node_modules/
+
+# React
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# PIDs
+pids/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# llama.cpp build
+llama.cpp/build/
+*.o
+*.a
+
+# Intermediate GGUF
+models/*.f16.gguf

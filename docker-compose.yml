@@ -1,0 +1,90 @@
+version: "3.9"
+
+# ============================================================
+# ai powered voice based 24.7 booking system — Docker Compose
+# CPU-only, no GPU required
+# Run: docker-compose up -d
+# ============================================================
+
+services:
+
+  # ── Redis ──────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --bind 0.0.0.0
+      --rename-command FLUSHALL ""
+      --rename-command FLUSHDB  ""
+      --rename-command DEBUG    ""
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Python AI Service ──────────────────────────────────────
+  python-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "127.0.0.1:8001:8001"
+    volumes:
+      - ./models:/app/models:ro
+      - ./database:/app/database
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ── Node.js Server ─────────────────────────────────────────
+  node-server:
+    build:
+      context: ./backend/node
+      dockerfile: ../../Dockerfile.node
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - PYTHON_API_URL=http://python-ai:8001
+    ports:
+      - "0.0.0.0:8000:8000"
+      - "0.0.0.0:8080:8080"
+    depends_on:
+      python-ai:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ── React Dashboard ────────────────────────────────────────
+  dashboard:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:3000:3000"
+    depends_on:
+      - node-server
+
+volumes:
+  redis_data:

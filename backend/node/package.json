@@ -1,0 +1,25 @@
+{
+  "name": "ai-powered-voice-booking-node",
+  "version": "1.0.0",
+  "description": "ai powered voice based 24.7 booking system — Node.js telephony backend (Asterisk ARI + WebSocket)",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node tests/test_node.js"
+  },
+  "dependencies": {
+    "ari-client": "^2.2.0",
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.17.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
